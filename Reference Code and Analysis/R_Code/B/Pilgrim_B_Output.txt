@@ -1,0 +1,688 @@
+
+R version 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(car)
+> source('./mylib2.r')
+> 
+> 
+> ###########
+> ###Case B #
+> ###########
+> 
+> #Read-in data
+> pilg <- read.csv("extended_data.csv", header=TRUE)
+> 
+> names(pilg)
+ [1] "X"          "ID"         "Profit9"    "Online9"    "Age9"      
+ [6] "Inc9"       "Tenure9"    "District9"  "Profit0"    "Online0"   
+[11] "Billpay9"   "Billpay0"   "fDistrict9" "NAge"       "AgeImpt"   
+[16] "MissingAge" "NInc"       "IncImpt"    "MissingInc" "D1100"     
+[21] "D1200"     
+> dim(pilg)
+[1] 31634    21
+> head(pilg)
+  X ID Profit9 Online9 Age9 Inc9 Tenure9 District9 Profit0 Online0 Billpay9
+1 1  1      21       0   NA   NA    6.33      1200      NA      NA        0
+2 2  2      -6       0    6    3   29.50      1200     -32       0        0
+3 3  3     -49       1    5    5   26.41      1100     -22       1        0
+4 4  4      -4       0   NA   NA    2.25      1200      NA      NA        0
+5 5  5     -61       0    2    9    9.91      1200      -4       0        0
+6 6  6     -38       0   NA    3    2.33      1300      14       0        0
+  Billpay0 fDistrict9     NAge  AgeImpt MissingAge     NInc  IncImpt MissingInc
+1       NA       1200 4.046048 3.724063          1 5.458777 5.594750          1
+2        0       1200 6.000000 6.000000          0 3.000000 3.000000          0
+3        0       1100 5.000000 5.000000          0 5.000000 5.000000          0
+4       NA       1200 4.046048 3.399208          1 5.458777 5.534384          1
+5        0       1200 2.000000 2.000000          0 9.000000 9.000000          0
+6        0       1300 4.046048 3.484607          1 3.000000 3.000000          0
+  D1100 D1200
+1     0     1
+2     0     1
+3     1     0
+4     0     1
+5     0     1
+6     0     0
+> tail(pilg)
+          X    ID Profit9 Online9 Age9 Inc9 Tenure9 District9 Profit0 Online0
+31629 31629 31629     209       0    7    8   10.75      1200     230       0
+31630 31630 31630     -50       0    5    5    3.75      1200       1       0
+31631 31631 31631     458       0    3    8   12.08      1300     423       1
+31632 31632 31632     -83       0    6    4   15.83      1200     -60       0
+31633 31633 31633      92       1    1    6    5.41      1200     170       1
+31634 31634 31634     124       0    3    6   17.50      1300     150       0
+      Billpay9 Billpay0 fDistrict9 NAge AgeImpt MissingAge NInc IncImpt
+31629        0        0       1200    7       7          0    8       8
+31630        0        0       1200    5       5          0    5       5
+31631        0        0       1300    3       3          0    8       8
+31632        0        0       1200    6       6          0    4       4
+31633        0        0       1200    1       1          0    6       6
+31634        0        0       1300    3       3          0    6       6
+      MissingInc D1100 D1200
+31629          0     0     1
+31630          0     0     1
+31631          0     0     0
+31632          0     0     1
+31633          0     0     1
+31634          0     0     0
+> 
+> attach(pilg)
+> 
+> univariate.stats(Profit9)
+
+
+Summary of  Profit9 
+
+Observations   :  31634 
+Non-Missing    :  31634 
+Missing        :  0 
+Mean           :  111.5027 
+Median         :  9 
+Sum            :  3527276 
+Maximum        :  2071 
+Minimum        :  -221 
+Range          :  2292 
+Std. Dev.      :  272.8394 
+Variance       :  74441.33 
+Coeff. of Var. :  244.6931 
+Sum of Squares :  2748103456 
+Constrained SS :  2354802704 
+Skewness       :  2.747614 
+Kurtosis       :  9.937721 
+
+Percentiles
+     0%      1%    2.5%      5%     10%     25%     50%     75%     90%     95% 
+-221.00 -175.00 -144.00 -115.00  -81.00  -34.00    9.00  164.00  424.00  658.00 
+    99%    100% 
+1278.01 2071.00 
+
+t-test mu = 0.0
+    t :  72.68676 
+    df:  31633 
+    p :  0 
+
+wilcox-test mu=0.0
+    V :  329441984 
+    Z :  51.49141 
+    p :  0 
+
+sign-test
+    %P:  53.58462 
+    p :  5.468607e-37 
+
+> univariate.stats(Profit0)
+
+
+Summary of  Profit0 
+
+Observations   :  31634 
+Non-Missing    :  26396 
+Missing        :  5238 
+Mean           :  144.827 
+Median         :  23 
+Sum            :  3822854 
+Maximum        :  27086 
+Minimum        :  -5643 
+Range          :  32729 
+Std. Dev.      :  389.9947 
+Variance       :  152095.9 
+Coeff. of Var. :  269.2831 
+Sum of Squares :  4568223438 
+Constrained SS :  4014570888 
+Skewness       :  17.64096 
+Kurtosis       :  971.4829 
+
+Percentiles
+      0%       1%     2.5%       5%      10%      25%      50%      75% 
+-5643.00  -180.05  -141.00  -110.00   -76.00   -30.00    23.00   206.00 
+     90%      95%      99%     100% 
+  487.50   740.00  1433.10 27086.00 
+
+t-test mu = 0.0
+    t :  60.33369 
+    df:  26395 
+    p :  0 
+
+wilcox-test mu=0.0
+    V :  249081891 
+    Z :  62.37517 
+    p :  0 
+
+sign-test
+    %P:  58.6262 
+    p :  8.569353e-173 
+
+> 
+> # Missing data in this case may lead to biased estimates!
+> # Need to properly Handle Missing Data
+> # see NInc, IncImpt, MissingInc, NAge, AgeImpt, MissingAge
+> # already create last time
+> 
+> # Categorical versions for NewAge and NewInc
+> # note this can not be done with IncImpt and AgeImpt
+> # since these are a mix of levels and continuous
+> fNAge = factor(NAge)
+> fNInc = factor(NInc)
+> 
+> # Customer was retained
+> retain <- rep(1, length(pilg$Profit9))
+> retain[is.na(pilg$Profit0)] <- 0
+> head(retain)
+[1] 0 1 1 0 1 1
+> length(retain)
+[1] 31634
+> 
+> detach(pilg)
+> 
+> # Now add all of the new varaibles to the data frame
+> # and remove the copies that remain in the workspace
+> pilg <- data.frame(pilg, retain, fNAge, fNInc)
+> rm(retain);  rm(fNAge); rm(fNInc);
+> 
+> attach(pilg)
+> 
+> # Run logistic logit regression on our most robust model to find
+> # out more about the drivers of cutomer retention.
+> lfit <- glm(retain ~ Profit9 + Online9 + Tenure9 + D1100 + D1200 + IncImpt + MissingInc + AgeImpt + MissingAge, family=binomial(link=logit))
+> #Interpretation of the results/coefficients
+> summary(lfit)
+
+Call:
+glm(formula = retain ~ Profit9 + Online9 + Tenure9 + D1100 + 
+    D1200 + IncImpt + MissingInc + AgeImpt + MissingAge, family = binomial(link = logit))
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.8131   0.2982   0.3881   0.4627   1.2429  
+
+Coefficients:
+              Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  1.570e+00  8.874e-02  17.697  < 2e-16 ***
+Profit9      1.815e-04  7.179e-05   2.529   0.0114 *  
+Online9      1.128e-01  5.438e-02   2.075   0.0380 *  
+Tenure9      3.409e-02  2.704e-03  12.609  < 2e-16 ***
+D1100       -2.478e-02  6.851e-02  -0.362   0.7175    
+D1200        4.145e-02  5.010e-02   0.827   0.4080    
+IncImpt      5.565e-02  1.073e-02   5.189 2.12e-07 ***
+MissingInc  -1.068e+00  7.610e-02 -14.041  < 2e-16 ***
+AgeImpt      6.752e-02  1.676e-02   4.030 5.59e-05 ***
+MissingAge  -1.094e+00  7.598e-02 -14.395  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 28395  on 31633  degrees of freedom
+Residual deviance: 23300  on 31624  degrees of freedom
+AIC: 23320
+
+Number of Fisher Scoring iterations: 5
+
+> logLik(lfit)
+'log Lik.' -11650.08 (df=10)
+> 
+> cat("\nOverall Model Error Rate\n")
+
+Overall Model Error Rate
+> # overall error rate
+> predret <- rep(0,length(retain))
+> predret[lfit$fitted > 0.5] <- 1
+> err = abs(predret - retain)
+> sum(err)/length(err)
+[1] 0.1616299
+> 
+> cat("\nTable of Predicted vs Actual\n")
+
+Table of Predicted vs Actual
+> table(predret, retain)
+       retain
+predret     0     1
+      0   542   417
+      1  4696 25979
+> 
+> cat("\nTest of Overall Fit of the Model\n")
+
+Test of Overall Fit of the Model
+> cat("\nDifference in Deviance: ")
+
+Difference in Deviance: > lfit$null.deviance - lfit$deviance
+[1] 5095.17
+> cat("\nDegrees of Freedom of the Difference: ")
+
+Degrees of Freedom of the Difference: > lfit$df.null - lfit$df.residual
+[1] 9
+> cat("\nChiSquare test for the Overall Model\n")
+
+ChiSquare test for the Overall Model
+> dchisq(lfit$null.deviance-lfit$deviance, lfit$df.null-lfit$df.residual)
+[1] 0
+> cat("\n\n")
+
+
+> 
+> cat("\nBootstrapped Estimate of Error Rate using Cross Validation\n")
+
+Bootstrapped Estimate of Error Rate using Cross Validation
+> library(boot)
+> val10fold <- cv.glm(pilg, glmfit = lfit, K = 10)
+> val10fold$delta
+[1] 0.1128494 0.1128441
+> 
+> 
+> detach(pilg)
+> 
+> cat("\n\nTest if Online9 Associated with Higher Profit0 with controls including Profit9, etc\n")
+
+
+Test if Online9 Associated with Higher Profit0 with controls including Profit9, etc
+> 
+> # remove all non-retained values from the data set
+> npilg <- pilg
+> ds <- which(is.na(npilg$Profit0))
+> npilg <- npilg[-ds,]
+> 
+> attach(npilg)
+> univariate.stats(Profit0)
+
+
+Summary of  Profit0 
+
+Observations   :  26396 
+Non-Missing    :  26396 
+Missing        :  0 
+Mean           :  144.827 
+Median         :  23 
+Sum            :  3822854 
+Maximum        :  27086 
+Minimum        :  -5643 
+Range          :  32729 
+Std. Dev.      :  389.9947 
+Variance       :  152095.9 
+Coeff. of Var. :  269.2831 
+Sum of Squares :  4568223438 
+Constrained SS :  4014570888 
+Skewness       :  17.64096 
+Kurtosis       :  971.4829 
+
+Percentiles
+      0%       1%     2.5%       5%      10%      25%      50%      75% 
+-5643.00  -180.05  -141.00  -110.00   -76.00   -30.00    23.00   206.00 
+     90%      95%      99%     100% 
+  487.50   740.00  1433.10 27086.00 
+
+t-test mu = 0.0
+    t :  60.33369 
+    df:  26395 
+    p :  0 
+
+wilcox-test mu=0.0
+    V :  249081891 
+    Z :  62.37517 
+    p :  0 
+
+sign-test
+    %P:  58.6262 
+    p :  8.569353e-173 
+
+> univariate.stats(Profit9)
+
+
+Summary of  Profit9 
+
+Observations   :  26396 
+Non-Missing    :  26396 
+Missing        :  0 
+Mean           :  119.8209 
+Median         :  13 
+Sum            :  3162793 
+Maximum        :  2071 
+Minimum        :  -221 
+Range          :  2292 
+Std. Dev.      :  278.9403 
+Variance       :  77807.72 
+Coeff. of Var. :  232.7977 
+Sum of Squares :  2432703451 
+Constrained SS :  2053734684 
+Skewness       :  2.608118 
+Kurtosis       :  8.929916 
+
+Percentiles
+     0%      1%    2.5%      5%     10%     25%     50%     75%     90%     95% 
+-221.00 -176.00 -146.00 -118.00  -82.00  -34.00   13.00  181.25  446.00  684.00 
+    99%    100% 
+1291.10 2071.00 
+
+t-test mu = 0.0
+    t :  69.78955 
+    df:  26395 
+    p :  0 
+
+wilcox-test mu=0.0
+    V :  235967720 
+    Z :  52.37148 
+    p :  0 
+
+sign-test
+    %P:  55.14229 
+    p :  2.560985e-62 
+
+> 
+> # Run the base analysis for all controls and dummies for missing data
+> bfit <- lm(Profit0 ~ Online9 + D1100 + D1200 + AgeImpt + MissingAge + IncImpt + MissingInc + Tenure9 + Profit9)
+> summary(bfit)
+
+Call:
+lm(formula = Profit0 ~ Online9 + D1100 + D1200 + AgeImpt + MissingAge + 
+    IncImpt + MissingInc + Tenure9 + Profit9)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-6948.6   -72.6   -33.0    28.5 26900.8 
+
+Coefficients:
+             Estimate Std. Error t value Pr(>|t|)    
+(Intercept)  0.047881   9.086675   0.005 0.995796    
+Online9     14.542414   5.928460   2.453 0.014174 *  
+D1100       -7.160915   8.168249  -0.877 0.380670    
+D1200       -2.869779   5.837024  -0.492 0.622970    
+AgeImpt     -0.523730   1.466331  -0.357 0.720967    
+MissingAge   5.361857  10.456883   0.513 0.608124    
+IncImpt      7.235805   0.947348   7.638 2.28e-14 ***
+MissingInc  -6.142544  10.473531  -0.586 0.557556    
+Tenure9      0.899374   0.255955   3.514 0.000442 ***
+Profit9      0.825170   0.007103 116.178  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 311.7 on 26386 degrees of freedom
+Multiple R-squared:  0.3614,	Adjusted R-squared:  0.3612 
+F-statistic:  1659 on 9 and 26386 DF,  p-value: < 2.2e-16
+
+> 
+> # examine residuals
+> cat("\n\nExamine Statistics of Residuals")
+
+
+Examine Statistics of Residuals> univariate.stats(resid(bfit))
+
+
+Summary of  resid(bfit) 
+
+Observations   :  26396 
+Non-Missing    :  26396 
+Missing        :  0 
+Mean           :  7.56915e-16 
+Median         :  -33.03668 
+Sum            :  2.586442e-11 
+Maximum        :  26900.83 
+Minimum        :  -6948.65 
+Range          :  33849.48 
+Std. Dev.      :  311.6597 
+Variance       :  97131.75 
+Coeff. of Var. :  4.117499e+19 
+Sum of Squares :  2563792669 
+Constrained SS :  2563792669 
+Skewness       :  31.30241 
+Kurtosis       :  2352.687 
+
+Percentiles
+         0%          1%        2.5%          5%         10%         25% 
+-6948.64988  -532.50019  -337.28073  -222.15070  -140.15722   -72.61081 
+        50%         75%         90%         95%         99%        100% 
+  -33.03668    28.52210   168.92214   311.92666   807.86925 26900.83430 
+
+t-test mu = 0.0
+    t :  3.945804e-16 
+    df:  26395 
+    p :  1 
+
+wilcox-test mu=0.0
+    V :  127580564 
+    Z :  -37.65134 
+    p :  0 
+
+sign-test
+    %P:  32.52387 
+    p :  4.940656e-324 
+
+> 
+> # check for normality
+> cat("\n\nGenerate a Histogram of Standardized Residuals\n")
+
+
+Generate a Histogram of Standardized Residuals
+> stdres <- rstandard(bfit)
+> hist(stdres, plot=TRUE)
+> 
+> # Use Normality Plot
+> cat("\n\nGenerate a Normality Plot of Residuals\n")
+
+
+Generate a Normality Plot of Residuals
+> qqnorm(stdres, ylab="Standardized Residuals", xlab="Normal Scores", main="Online Profitability Model")
+> qqline(stdres)
+> 
+> # make residual plots
+> cat("\n\nGenerate Residual Plots\n")
+
+
+Generate Residual Plots
+> plot(AgeImpt, stdres, ylab="Std. Residuals", xlab="AgeImpt")
+> abline(0,0)
+> 
+> plot(IncImpt, stdres, ylab="Std. Residuals", xlab="IncImpt")
+> abline(0,0)
+> 
+> plot(Tenure9, stdres, ylab="Std. Residuals", xlab="Tenure9")
+> abline(0,0)
+> 
+> plot(Profit9, stdres, ylab="Std. Residuals", xlab="Profit9")
+> abline(0,0)
+> 
+> # Check for Heteroskedasticity
+> cat("\n\nUse Plot of Residuals vs Fitted to check for Heteroskedasticity\n")
+
+
+Use Plot of Residuals vs Fitted to check for Heteroskedasticity
+> plot(fitted(bfit), resid(bfit), ylab="Residuals", xlab="Fitted Values")
+> abline(0,0)
+> 
+> # check for outliers
+> cat("\n\nCooks Distance - Unusual Observations\n")
+
+
+Cooks Distance - Unusual Observations
+> trm <- terms(bfit)
+> degfree <- length(attributes(trm)$term.labels) + attributes(trm)$intercept
+> cd <- cooks.distance(bfit)
+> pcd <- pf(cd,degfree,length(cd))
+> if (length(pcd[pcd>0.15]) > 0) {
++     ds <-which(pcd > 0.15)
++     print(ID[ds])
++ }
+> 
+> # check for multi-collinearity
+> cat("\n\nCheck for Multi-Collinearity Issues")
+
+
+Check for Multi-Collinearity Issues> vlst <- cbind(Profit0, Online9, AgeImpt, MissingAge, IncImpt, MissingInc, Tenure9, D1100, D1200, Profit9)
+> cor(vlst)
+               Profit0      Online9     AgeImpt  MissingAge     IncImpt
+Profit0     1.00000000  0.019892582  0.08913267 -0.03937434  0.12521255
+Online9     0.01989258  1.000000000 -0.17602503 -0.01720334  0.09409532
+AgeImpt     0.08913267 -0.176025027  1.00000000 -0.04247251 -0.07627613
+MissingAge -0.03937434 -0.017203343 -0.04247251  1.00000000 -0.03995015
+IncImpt     0.12521255  0.094095324 -0.07627613 -0.03995015  1.00000000
+MissingInc -0.04201572 -0.023386236 -0.05743784  0.88006004 -0.01615684
+Tenure9     0.12851974 -0.074956128  0.46026303 -0.09485479  0.04150996
+D1100      -0.03166302 -0.042834437  0.07695899  0.02275968 -0.19391641
+D1200       0.03714163  0.055418197 -0.06820151 -0.02138622  0.23886092
+Profit9     0.59933687  0.008254777  0.14797138 -0.06049404  0.14127911
+            MissingInc     Tenure9       D1100       D1200      Profit9
+Profit0    -0.04201572  0.12851974 -0.03166302  0.03714163  0.599336867
+Online9    -0.02338624 -0.07495613 -0.04283444  0.05541820  0.008254777
+AgeImpt    -0.05743784  0.46026303  0.07695899 -0.06820151  0.147971384
+MissingAge  0.88006004 -0.09485479  0.02275968 -0.02138622 -0.060494044
+IncImpt    -0.01615684  0.04150996 -0.19391641  0.23886092  0.141279105
+MissingInc  1.00000000 -0.09647663  0.01377796 -0.01113706 -0.064139435
+Tenure9    -0.09647663  1.00000000  0.02511577 -0.02716687  0.184605614
+D1100       0.01377796  0.02511577  1.00000000 -0.60612241 -0.034366883
+D1200      -0.01113706 -0.02716687 -0.60612241  1.00000000  0.046178589
+Profit9    -0.06413943  0.18460561 -0.03436688  0.04617859  1.000000000
+> vif(bfit)
+   Online9      D1100      D1200    AgeImpt MissingAge    IncImpt MissingInc 
+  1.041463   1.590157   1.622029   1.329451   4.453758   1.104590   4.455080 
+   Tenure9    Profit9 
+  1.305691   1.066294 
+> 
+> detach(npilg)
+> 
+> cat("Use Trimming and repeat Test if Online9 Associated with Higher Profit0 with controls including Profit9, etc\n")
+Use Trimming and repeat Test if Online9 Associated with Higher Profit0 with controls including Profit9, etc
+> # Run the same analysis for all controls and dummies for missing data after winsorizing
+> wsdata <- npilg
+> ds <- NULL
+> tails = quantile(wsdata$Profit0, c(0.025, 0.975))
+> ds <- which(wsdata$Profit0 < tails[[1]])
+> wsdata <- wsdata[-ds,]
+> ds <- which(wsdata$Profit0 > tails[[2]])
+> wsdata <- wsdata[-ds,]
+> 
+> bfit2 <- lm(Profit0 ~ Online9 + D1100 + D1200 + fNAge + fNInc + Tenure9 + Profit9, data=wsdata)
+> summary(bfit2)
+
+Call:
+lm(formula = Profit0 ~ Online9 + D1100 + D1200 + fNAge + fNInc + 
+    Tenure9 + Profit9, data = wsdata)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1327.68   -68.97   -32.04    40.10  1058.36 
+
+Coefficients:
+                        Estimate Std. Error t value Pr(>|t|)    
+(Intercept)            13.844805   7.601637   1.821 0.068574 .  
+Online9                16.239875   3.026853   5.365 8.15e-08 ***
+D1100                 -14.013402   4.156479  -3.371 0.000749 ***
+D1200                  -3.074231   2.961364  -1.038 0.299227    
+fNAge2                  9.535246   7.081765   1.346 0.178169    
+fNAge3                 16.234574   6.942540   2.338 0.019373 *  
+fNAge4                  9.957890   6.990949   1.424 0.154344    
+fNAge4.04604840436924   9.432577   8.008578   1.178 0.238884    
+fNAge5                  2.912091   7.260317   0.401 0.688352    
+fNAge6                  7.123981   7.533037   0.946 0.344312    
+fNAge7                 11.012541   7.412576   1.486 0.137383    
+fNInc2                 -2.771843   6.893119  -0.402 0.687601    
+fNInc3                  4.235780   4.966349   0.853 0.393725    
+fNInc4                 12.224661   5.075609   2.409 0.016025 *  
+fNInc5                  6.489638   5.067346   1.281 0.200319    
+fNInc5.45877722158046   7.966963   6.241556   1.276 0.201812    
+fNInc6                 19.996911   4.412041   4.532 5.86e-06 ***
+fNInc7                 20.361300   4.838318   4.208 2.58e-05 ***
+fNInc8                 32.968378   5.533217   5.958 2.58e-09 ***
+fNInc9                 41.551514   4.988441   8.330  < 2e-16 ***
+Tenure9                 1.010882   0.126143   8.014 1.16e-15 ***
+Profit9                 0.632417   0.004225 149.702  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+Residual standard error: 154.5 on 25065 degrees of freedom
+Multiple R-squared:  0.5036,	Adjusted R-squared:  0.5032 
+F-statistic:  1211 on 21 and 25065 DF,  p-value: < 2.2e-16
+
+> 
+> # examine residuals
+> cat("\n\nB - After Trimming: Examine Statistics of Residuals")
+
+
+B - After Trimming: Examine Statistics of Residuals> univariate.stats(resid(bfit2))
+
+
+Summary of  resid(bfit2) 
+
+Observations   :  25087 
+Non-Missing    :  25087 
+Missing        :  0 
+Mean           :  -4.553662e-15 
+Median         :  -32.04357 
+Sum            :  -1.135296e-10 
+Maximum        :  1058.356 
+Minimum        :  -1327.682 
+Range          :  2386.038 
+Std. Dev.      :  154.3934 
+Variance       :  23837.34 
+Coeff. of Var. :  -3.390533e+18 
+Sum of Squares :  597983423 
+Constrained SS :  597983423 
+Skewness       :  0.9593611 
+Kurtosis       :  7.324683 
+
+Percentiles
+         0%          1%        2.5%          5%         10%         25% 
+-1327.68193  -385.24088  -242.90471  -162.94613  -115.02293   -68.96522 
+        50%         75%         90%         95%         99%        100% 
+  -32.04357    40.09948   179.24234   290.73630   553.68081  1058.35605 
+
+t-test mu = 0.0
+    t :  -4.6715e-15 
+    df:  25086 
+    p :  1 
+
+wilcox-test mu=0.0
+    V :  126475970 
+    Z :  -26.91144 
+    p :  1.613869e-159 
+
+sign-test
+    %P:  34.66337 
+    p :  4.940656e-324 
+
+> 
+> # check for normality
+> cat("\n\nB - After Trimming: Generate a Histogram of Standardized Residuals\n")
+
+
+B - After Trimming: Generate a Histogram of Standardized Residuals
+> stdres <- rstandard(bfit2)
+> hist(stdres, plot=TRUE, main="After Trimming")
+> 
+> # Use Normality Plot
+> cat("\n\nB - After Trimming: Generate a Normality Plot of Residuals\n")
+
+
+B - After Trimming: Generate a Normality Plot of Residuals
+> qqnorm(stdres, ylab="Standardized Residuals", xlab="Normal Scores", main="Trimmed Model")
+> qqline(stdres)
+> 
+> # make residual plots
+> cat("\n\nB - After Trimming: Generate Residual Plots\n")
+
+
+B - After Trimming: Generate Residual Plots
+> plot(wsdata$NAge, stdres, ylab="Std. Residuals", xlab="NAge", main="After Trimming")
+> abline(0,0)
+> 
+> plot(wsdata$NInc, stdres, ylab="Std. Residuals", xlab="NInc", main="After Trimming")
+> abline(0,0)
+> 
+> plot(wsdata$Tenure9, stdres, ylab="Std. Residuals", xlab="Tenure9", main="After Trimming")
+> abline(0,0)
+> 
+> plot(wsdata$Profit9, stdres, ylab="Std. Residuals", xlab="Profit9", main="After Trimming")
+> abline(0,0)
+> 

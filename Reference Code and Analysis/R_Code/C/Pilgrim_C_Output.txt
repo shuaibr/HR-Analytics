@@ -1,0 +1,506 @@
+
+R version 3.6.2 (2019-12-12) -- "Dark and Stormy Night"
+Copyright (C) 2019 The R Foundation for Statistical Computing
+Platform: x86_64-apple-darwin15.6.0 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+  Natural language support but running in an English locale
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+> library(car)
+> source('./mylib2.r')
+> 
+> 
+> ###########
+> ###Case C #
+> ###########
+> 
+> #Read-in data
+> pilg <- read.csv("extended_data.csv", header=TRUE)
+> 
+> names(pilg)
+ [1] "X"          "ID"         "Profit9"    "Online9"    "Age9"      
+ [6] "Inc9"       "Tenure9"    "District9"  "Profit0"    "Online0"   
+[11] "Billpay9"   "Billpay0"   "fDistrict9" "NAge"       "AgeImpt"   
+[16] "MissingAge" "NInc"       "IncImpt"    "MissingInc" "D1100"     
+[21] "D1200"     
+> dim(pilg)
+[1] 31634    21
+> head(pilg)
+  X ID Profit9 Online9 Age9 Inc9 Tenure9 District9 Profit0 Online0 Billpay9
+1 1  1      21       0   NA   NA    6.33      1200      NA      NA        0
+2 2  2      -6       0    6    3   29.50      1200     -32       0        0
+3 3  3     -49       1    5    5   26.41      1100     -22       1        0
+4 4  4      -4       0   NA   NA    2.25      1200      NA      NA        0
+5 5  5     -61       0    2    9    9.91      1200      -4       0        0
+6 6  6     -38       0   NA    3    2.33      1300      14       0        0
+  Billpay0 fDistrict9     NAge  AgeImpt MissingAge     NInc  IncImpt MissingInc
+1       NA       1200 4.046048 3.724063          1 5.458777 5.594750          1
+2        0       1200 6.000000 6.000000          0 3.000000 3.000000          0
+3        0       1100 5.000000 5.000000          0 5.000000 5.000000          0
+4       NA       1200 4.046048 3.399208          1 5.458777 5.534384          1
+5        0       1200 2.000000 2.000000          0 9.000000 9.000000          0
+6        0       1300 4.046048 3.484607          1 3.000000 3.000000          0
+  D1100 D1200
+1     0     1
+2     0     1
+3     1     0
+4     0     1
+5     0     1
+6     0     0
+> tail(pilg)
+          X    ID Profit9 Online9 Age9 Inc9 Tenure9 District9 Profit0 Online0
+31629 31629 31629     209       0    7    8   10.75      1200     230       0
+31630 31630 31630     -50       0    5    5    3.75      1200       1       0
+31631 31631 31631     458       0    3    8   12.08      1300     423       1
+31632 31632 31632     -83       0    6    4   15.83      1200     -60       0
+31633 31633 31633      92       1    1    6    5.41      1200     170       1
+31634 31634 31634     124       0    3    6   17.50      1300     150       0
+      Billpay9 Billpay0 fDistrict9 NAge AgeImpt MissingAge NInc IncImpt
+31629        0        0       1200    7       7          0    8       8
+31630        0        0       1200    5       5          0    5       5
+31631        0        0       1300    3       3          0    8       8
+31632        0        0       1200    6       6          0    4       4
+31633        0        0       1200    1       1          0    6       6
+31634        0        0       1300    3       3          0    6       6
+      MissingInc D1100 D1200
+31629          0     0     1
+31630          0     0     1
+31631          0     0     0
+31632          0     0     1
+31633          0     0     1
+31634          0     0     0
+> 
+> attach(pilg)
+> 
+> # note that Age9 and Inc9 both have a significant percentage of missing values
+> basic.stats(Billpay9)
+
+
+Summary of  Billpay9 
+
+Observations   :  31634 
+Non-Missing    :  31634 
+Missing        :  0 
+Mean           :  0.0166909 
+Median         :  0 
+Sum            :  528 
+Maximum        :  1 
+Minimum        :  0 
+Range          :  1 
+Std. Dev.      :  0.1281126 
+Variance       :  0.01641283 
+Coeff. of Var. :  767.5594 
+Sum of Squares :  528 
+Constrained SS :  519.1872 
+Skewness       :  7.545545 
+Kurtosis       :  54.93873 
+
+> basic.stats(Billpay0)
+
+
+Summary of  Billpay0 
+
+Observations   :  31634 
+Non-Missing    :  26415 
+Missing        :  5219 
+Mean           :  0.03021011 
+Median         :  0 
+Sum            :  798 
+Maximum        :  1 
+Minimum        :  0 
+Range          :  1 
+Std. Dev.      :  0.1711682 
+Variance       :  0.02929857 
+Coeff. of Var. :  566.5926 
+Sum of Squares :  798 
+Constrained SS :  773.8923 
+Skewness       :  5.489634 
+Kurtosis       :  28.13821 
+
+> basic.stats(Online9)
+
+
+Summary of  Online9 
+
+Observations   :  31634 
+Non-Missing    :  31634 
+Missing        :  0 
+Mean           :  0.1218309 
+Median         :  0 
+Sum            :  3854 
+Maximum        :  1 
+Minimum        :  0 
+Range          :  1 
+Std. Dev.      :  0.3270956 
+Variance       :  0.1069915 
+Coeff. of Var. :  268.4832 
+Sum of Squares :  3854 
+Constrained SS :  3384.464 
+Skewness       :  2.312431 
+Kurtosis       :  3.347547 
+
+> basic.stats(Online0)
+
+
+Summary of  Online0 
+
+Observations   :  31634 
+Non-Missing    :  26415 
+Missing        :  5219 
+Mean           :  0.1989779 
+Median         :  0 
+Sum            :  5256 
+Maximum        :  1 
+Minimum        :  0 
+Range          :  1 
+Std. Dev.      :  0.3992389 
+Variance       :  0.1593917 
+Coeff. of Var. :  200.6449 
+Sum of Squares :  5256 
+Constrained SS :  4210.172 
+Skewness       :  1.508094 
+Kurtosis       :  0.2743689 
+
+> 
+> # Need to properly Handle Missing Data
+> # Missing data already imputed 
+> 
+> # Customer Retention
+> retain <- rep(1, length(pilg$Profit9))
+> retain[is.na(pilg$Profit0)] <- 0
+> head(retain)
+[1] 0 1 1 0 1 1
+> length(retain)
+[1] 31634
+> basic.stats(retain)
+
+
+Summary of  retain 
+
+Observations   :  31634 
+Non-Missing    :  31634 
+Missing        :  0 
+Mean           :  0.8344187 
+Median         :  1 
+Sum            :  26396 
+Maximum        :  1 
+Minimum        :  0 
+Range          :  1 
+Std. Dev.      :  0.3717103 
+Variance       :  0.1381685 
+Coeff. of Var. :  44.54721 
+Sum of Squares :  26396 
+Constrained SS :  4370.685 
+Skewness       :  -1.799465 
+Kurtosis       :  1.238152 
+
+> 
+> # Categorical versions for NAge and NInc
+> # note this can not be done with IncImpt and AgeImpt
+> # since these are a mix of levels and continuous
+> fNAge = factor(NAge)
+> fNInc = factor(NInc)
+> 
+> # Add New Variables for State Transition Analysis
+> # State is Tuple: (Online, BillPay) or Out
+> 
+> B00 = rep(0, length(Profit9))
+> B10 = rep(0, length(Profit9))
+> B11 = rep(0, length(Profit9))
+> 
+> B00[((Online9 == 0) & (Billpay9 == 0))] <- 1
+> B10[((Online9 == 1) & (Billpay9 == 0))] <- 1
+> B11[((Online9 == 1) & (Billpay9 == 1))] <- 1
+> sum(B00)
+[1] 27780
+> 100.0 * sum(B00)/length(Profit9)
+[1] 87.81691
+> sum(B10)
+[1] 3326
+> 100.0 * sum(B10)/length(Profit9)
+[1] 10.514
+> sum(B11)
+[1] 528
+> 100.0 * sum(B11)/length(Profit9)
+[1] 1.66909
+> 
+> 
+> E00 = rep(0, length(Profit9))
+> E10 = rep(0, length(Profit9))
+> E11 = rep(0, length(Profit9))
+> EOut = rep(0, length(Profit9))
+> 
+> E00[(retain == 1) & (Online0 == 0) & (Billpay0 == 0)] <- 1
+> E10[(retain == 1) & (Online0 == 1) & (Billpay0 == 0)] <- 1
+> E11[(retain == 1) & (Online0 == 1) & (Billpay0 == 1)] <- 1
+> EOut[(retain == 0)] <- 1
+> sum(E00)
+[1] 21155
+> 100.0 * sum(E00)/length(Profit9)
+[1] 66.87425
+> sum(E10)
+[1] 4453
+> 100.0 * sum(E10)/length(Profit9)
+[1] 14.07663
+> sum(E11)
+[1] 785
+> 100.0 * sum(E11)/length(Profit9)
+[1] 2.481507
+> sum(EOut)
+[1] 5238
+> 100.0 * sum(EOut)/length(Profit9)
+[1] 16.55813
+> 
+> #Calculate Conditional State Transition Probabilities and  Number of Transitions
+> sum(B00 == 1 & E00 == 1)
+[1] 20832
+> 100.0 * sum(B00 == 1 & E00 == 1) / sum(B00)
+[1] 74.9892
+> 
+> sum(B00 == 1 & E10 == 1)
+[1] 1956
+> 100.0 * sum(B00 == 1 & E10 == 1) / sum(B00)
+[1] 7.041037
+> 
+> sum(B00 == 1 & E11 == 1)
+[1] 317
+> 100.0 * sum(B00 == 1 & E11 == 1) / sum(B00)
+[1] 1.141109
+> 
+> sum(B00 == 1 & EOut == 1)
+[1] 4673
+> 100.0 * sum(B00 == 1 & EOut == 1) / sum(B00)
+[1] 16.82145
+> 
+> sum(B10 == 1 & E00 == 1)
+[1] 298
+> 100.0 * sum(B10 == 1 & E00 == 1) / sum(B10)
+[1] 8.959711
+> 
+> sum(B10 == 1 & E10 == 1)
+[1] 2337
+> 100.0 * sum(B10 == 1 & E10 == 1) / sum(B10)
+[1] 70.26458
+> 
+> sum(B10 == 1 & E11 == 1)
+[1] 225
+> 100.0 * sum(B10 == 1 & E11 == 1) / sum(B10)
+[1] 6.764883
+> 
+> sum(B10 == 1 & EOut == 1)
+[1] 466
+> 100.0 * sum(B10 == 1 & EOut == 1) / sum(B10)
+[1] 14.01082
+> 
+> 
+> sum(B11 == 1 & E00 == 1)
+[1] 25
+> 100.0 * sum(B11 == 1 & E00 == 1) / sum(B11)
+[1] 4.734848
+> 
+> sum(B11 == 1 & E10 == 1)
+[1] 160
+> 100.0 * sum(B11 == 1 & E10 == 1) / sum(B11)
+[1] 30.30303
+> 
+> sum(B11 == 1 & E11 == 1)
+[1] 243
+> 100.0 * sum(B11 == 1 & E11 == 1) / sum(B11)
+[1] 46.02273
+> 
+> sum(B11 == 1 & EOut == 1)
+[1] 99
+> 100.0 * sum(B11 == 1 & EOut == 1) / sum(B11)
+[1] 18.75
+> 
+> detach(pilg)
+> 
+> # Now add all of the new varaibles to the data frame
+> # and remove the copies that remain in the workspace
+> 
+> pilg <- data.frame(pilg, retain, fNAge, fNInc, B00, B10, B11, E00, E10, E11, EOut)
+> rm(retain); rm(fNAge); rm(fNInc)
+> rm(B00); rm(B10); rm(B11)
+> rm(E00); rm(E10); rm(E11); rm(EOut)
+> 
+> attach(pilg)
+> 
+> # Run logistic logit regression on our most robust model to find
+> # out more about the drivers of customer retention.
+> 
+> lfit <- glm(retain ~ Profit9 + Online9 + Billpay9 + Tenure9 + D1100 + D1200 + IncImpt + MissingInc + AgeImpt + MissingAge, family=binomial(link=logit))
+> #Interpretation of the results/coefficients
+> summary(lfit)
+
+Call:
+glm(formula = retain ~ Profit9 + Online9 + Billpay9 + Tenure9 + 
+    D1100 + D1200 + IncImpt + MissingInc + AgeImpt + MissingAge, 
+    family = binomial(link = logit))
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.8510   0.2971   0.3867   0.4646   1.3624  
+
+Coefficients:
+              Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  1.563e+00  8.878e-02  17.606  < 2e-16 ***
+Profit9      1.922e-04  7.194e-05   2.671 0.007552 ** 
+Online9      2.000e-01  5.867e-02   3.408 0.000653 ***
+Billpay9    -6.103e-01  1.357e-01  -4.498 6.85e-06 ***
+Tenure9      3.394e-02  2.705e-03  12.548  < 2e-16 ***
+D1100       -2.615e-02  6.854e-02  -0.382 0.702788    
+D1200        4.140e-02  5.011e-02   0.826 0.408638    
+IncImpt      5.687e-02  1.074e-02   5.298 1.17e-07 ***
+MissingInc  -1.069e+00  7.609e-02 -14.044  < 2e-16 ***
+AgeImpt      6.847e-02  1.677e-02   4.083 4.45e-05 ***
+MissingAge  -1.097e+00  7.598e-02 -14.443  < 2e-16 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 28395  on 31633  degrees of freedom
+Residual deviance: 23281  on 31623  degrees of freedom
+AIC: 23303
+
+Number of Fisher Scoring iterations: 5
+
+> logLik(lfit)
+'log Lik.' -11640.6 (df=11)
+> cat("\nTest of Overall Fit of the Model\n")
+
+Test of Overall Fit of the Model
+> cat("\nDifference in Deviance: ")
+
+Difference in Deviance: > lfit$null.deviance - lfit$deviance
+[1] 5114.133
+> cat("\nDegrees of Freedom of the Difference: ")
+
+Degrees of Freedom of the Difference: > lfit$df.null - lfit$df.residual
+[1] 10
+> cat("\nChiSquare test for the Overall Model\n")
+
+ChiSquare test for the Overall Model
+> dchisq(lfit$null.deviance-lfit$deviance, lfit$df.null-lfit$df.residual)
+[1] 0
+> cat("\n\n")
+
+
+> 
+> cat("\nOverall Model Error Rate\n")
+
+Overall Model Error Rate
+> # overall error rate
+> predret <- rep(0,length(retain))
+> predret[lfit$fitted > 0.5] <- 1
+> err = abs(predret - retain)
+> sum(err)/length(err)
+[1] 0.1614718
+> 
+> cat("\nBootstrapped Estimate of Error Rate\n")
+
+Bootstrapped Estimate of Error Rate
+> library(boot)
+> val10fold <- cv.glm(pilg, glmfit = lfit, K = 10)
+> val10fold$delta
+[1] 0.1127456 0.1127399
+> 
+> lfit2 <- glm(retain ~ Profit9 + Online9 + Billpay9 + Tenure9 + D1100 + D1200 + fNInc + fNAge, family=binomial(link=logit))
+> #Interpretation of the results/coefficients
+> summary(lfit2)
+
+Call:
+glm(formula = retain ~ Profit9 + Online9 + Billpay9 + Tenure9 + 
+    D1100 + D1200 + fNInc + fNAge, family = binomial(link = logit))
+
+Deviance Residuals: 
+    Min       1Q   Median       3Q      Max  
+-2.8549   0.2903   0.3784   0.4692   1.3655  
+
+Coefficients:
+                        Estimate Std. Error z value Pr(>|z|)    
+(Intercept)            1.353e+00  1.246e-01  10.859  < 2e-16 ***
+Profit9                1.848e-04  7.211e-05   2.563 0.010382 *  
+Online9                1.979e-01  5.772e-02   3.428 0.000609 ***
+Billpay9              -6.207e-01  1.362e-01  -4.559 5.15e-06 ***
+Tenure9                3.756e-02  2.411e-03  15.576  < 2e-16 ***
+D1100                 -3.837e-02  6.812e-02  -0.563 0.573263    
+D1200                  6.891e-02  4.930e-02   1.398 0.162153    
+fNInc2                -8.515e-03  1.428e-01  -0.060 0.952464    
+fNInc3                -8.871e-03  1.007e-01  -0.088 0.929799    
+fNInc4                 5.308e-02  1.067e-01   0.497 0.618872    
+fNInc5                 9.196e-02  1.073e-01   0.857 0.391430    
+fNInc5.45877722158046 -8.773e-01  9.954e-02  -8.813  < 2e-16 ***
+fNInc6                 2.669e-01  9.334e-02   2.859 0.004247 ** 
+fNInc7                 1.669e-01  1.027e-01   1.626 0.103973    
+fNInc8                 8.663e-02  1.182e-01   0.733 0.463495    
+fNInc9                 3.513e-01  1.128e-01   3.113 0.001850 ** 
+fNAge2                 3.556e-01  1.137e-01   3.127 0.001769 ** 
+fNAge3                 6.953e-01  1.145e-01   6.071 1.27e-09 ***
+fNAge4                 7.432e-01  1.174e-01   6.329 2.46e-10 ***
+fNAge4.04604840436924 -5.577e-01  1.178e-01  -4.736 2.18e-06 ***
+fNAge5                 5.994e-01  1.249e-01   4.799 1.60e-06 ***
+fNAge6                 5.954e-01  1.332e-01   4.469 7.86e-06 ***
+fNAge7                 6.709e-01  1.310e-01   5.120 3.05e-07 ***
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 28395  on 31633  degrees of freedom
+Residual deviance: 23232  on 31611  degrees of freedom
+AIC: 23278
+
+Number of Fisher Scoring iterations: 5
+
+> logLik(lfit2)
+'log Lik.' -11615.84 (df=23)
+> cat("\nTest of Overall Fit of the Model\n")
+
+Test of Overall Fit of the Model
+> cat("\nDifference in Deviance: ")
+
+Difference in Deviance: > lfit2$null.deviance - lfit2$deviance
+[1] 5163.651
+> cat("\nDegrees of Freedom of the Difference: ")
+
+Degrees of Freedom of the Difference: > lfit2$df.null - lfit2$df.residual
+[1] 22
+> cat("\nChiSquare test for the Overall Model\n")
+
+ChiSquare test for the Overall Model
+> dchisq(lfit2$null.deviance-lfit2$deviance, lfit2$df.null-lfit2$df.residual)
+[1] 0
+> cat("\n\n")
+
+
+> 
+> cat("\nOverall Model Error Rate\n")
+
+Overall Model Error Rate
+> # overall error rate
+> predret <- rep(0,length(retain))
+> predret[lfit2$fitted > 0.5] <- 1
+> err = abs(predret - retain)
+> sum(err)/length(err)
+[1] 0.1621673
+> 
+> cat("\nBootstrapped Estimate of Error Rate\n")
+
+Bootstrapped Estimate of Error Rate
+> val10fold <- cv.glm(pilg, glmfit = lfit2, K = 10)
+> val10fold$delta
+[1] 0.1127230 0.1127141
+> 
+> 
